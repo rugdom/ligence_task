@@ -3,12 +3,17 @@ from django.shortcuts import get_object_or_404
 from django.http import HttpResponse
 from rest_framework import viewsets
 from rest_framework.views import APIView
-from api.serializers import DICOMFileSerializer
+from api.serializers import DICOMFileSerializer, DICOMFileDetailSerializer
 
 
 class DICOMFileViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = DICOMFile.objects.all()
-    serializer_class = DICOMFileSerializer
+
+    def get_serializer_class(self):
+        if self.action == 'retrieve':
+            return DICOMFileDetailSerializer
+        else : 
+            return DICOMFileSerializer
 
 
 class DownloadFileView(APIView):
