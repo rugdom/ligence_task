@@ -2,6 +2,11 @@
   <div class="container">
     <div class="row">
       <div class="col col-sm-10">
+        
+        <div v-if="error" class="alert alert-danger mt-3" role="alert">
+          {{ error }}
+          <span class="float-end link-button" @click="closeError">Close</span>
+        </div>
         <h1 class="mt-5 mb-3">DICOM Files:</h1>
         
         <div>
@@ -45,8 +50,8 @@
 </template>
 
 <script>
-const API_URL = 'http://127.0.0.1:8000/api/'
 import axios from 'axios'
+import API_URL from '../constants'
 
 export default {
   name: 'DICOMFiles',
@@ -54,7 +59,8 @@ export default {
     return {
       files: [],
       file_data: [],
-      selected: ""
+      selected: "",
+      error: ""
     }
   },
   mounted () {
@@ -68,7 +74,7 @@ export default {
       }).then(response => {
         this.files = response.data
       }).catch((error) => {
-          console.log(error)
+          this.error = error
       })
     },
     showFileData(file_id) {
@@ -79,12 +85,15 @@ export default {
         this.file_data = response.data.file_data
         this.selected = file_id
       }).catch((error) => {
-          console.log(error)
+          this.error = error
       })
     },
     closeTable() {
       this.file_data = []
       this.selected = ""
+    },
+    closeError() {
+      this.error = ""
     }
   }
 }
