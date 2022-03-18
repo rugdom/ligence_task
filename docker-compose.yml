@@ -1,0 +1,41 @@
+version: '3.6'
+
+services:
+  backend:
+    restart: always
+    build:
+      context: ./backend
+      dockerfile: Dockerfile      
+    command: bash -c "python manage.py runserver 0.0.0.0:8000"
+    container_name: backend
+    image: backend_image
+    volumes:
+      - ./backend:/api
+    ports:
+      - '8000:8000'   
+      
+  frontend:
+    restart: always
+    build:  
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: frontend
+    image: frontend_image
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend/nginx:/etc/nginx/conf.d
+    ports:
+      - 3000:3000
+
+    
+
+      
+
+
+
+    
+
+
+  
+
