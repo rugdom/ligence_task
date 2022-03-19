@@ -6,7 +6,8 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile      
-    command: bash -c "python manage.py runserver 0.0.0.0:8000"
+    command: bash -c "python manage.py collectstatic --noinput &&
+                      python manage.py runserver 0.0.0.0:8000"
     container_name: backend
     image: backend_image
     volumes:
